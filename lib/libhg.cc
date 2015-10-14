@@ -408,6 +408,13 @@ extern "C" void Release()
 	matches.clear();
 	
 #ifdef ENABLE_GPU
+	sceneDescGPU.release();
+	objDescGPU.release();
+	objImgGPU.release();
+	sceneImgGPU.release(); 
+	objKpGPU.release();
+	sceneKpGPU.release();
+	
 	surf->releaseMemory();
 	delete surf;
 #else
