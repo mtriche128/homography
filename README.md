@@ -16,28 +16,30 @@ If you're running Ubuntu, the following is a step-by-step list of directions for
 
 ### Setting Up Your Build Environment
 
-'$ sudo apt-get install build-essential' 
+`$ sudo apt-get install build-essential`
 
 Executing this under your command line will install all the nessessary tools used to compile C/C++.
 
-$ g++ --version
+`$ g++ --version`
 
 This command should provide output which looks similar to the following:
 
+```
 g++ (Ubuntu 4.8.4-2ubuntu1~14.04) 4.8.4
 Copyright (C) 2013 Free Software Foundation, Inc.
 This is free software; see the source for copying conditions.  There is NO
 warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+```
 
 As you can see from the output above, the version of g++ is currently 4.8.4
 
 ### Installing Python
 
-$ sudo apt-get install python
+`$ sudo apt-get install python``
 
 This command will install Python 2.7.x
 
-$ python --version
+`$ python --version`
 
 After installing python, it's always a good idea to make sure you have the right version.
 
@@ -50,19 +52,23 @@ http://docs.opencv.org/doc/tutorials/introduction/linux_install/linux_install.ht
 
 ### Install the homography software package.
 
-$ git clone https://github.com/mtriche128/homography.git
+`$ git clone https://github.com/mtriche128/homography.git`
 
 ### Build and install the library.
 
+```
 $ cd homography/lib
 $ make
 $ make install
+```
 
 ### Veryify the library has been installed properly.
 
+```
 $ cd ..
 $ ls libhg.so
 libhg.so
+```
 
 ### Running the Software
 
@@ -90,7 +96,7 @@ homography.py takes four command-line arguments:
 4. output_data     - File-name of the JSON formatted output containing results from the homography calculation.
 
 An optional fifth argument can be passed, which specifies an output image containing matches and vertices.
-'-i OUTPUT_IMAGE'
+`-i OUTPUT_IMAGE`
 
 Example:
 scene_keypoints = chatfield_park_z15-0.json
@@ -104,14 +110,15 @@ $ python homography.py chatfield_park_z15-0.json chatfield_park_z15-0.png chatfi
 
 To enable GPU support, uncomment the following line in lib/libhg.cc:
 
-'//#define ENABLE_GPU' 
+`//#define ENABLE_GPU`
 
 to
 
-'#define ENABLE_GPU' 
+`#define ENABLE_GPU`
 
 Then, re-build and re-install the library:
 
+```
 $ make
 $ make install
-
+```
