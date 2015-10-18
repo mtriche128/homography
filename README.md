@@ -6,9 +6,9 @@ This collection of software is designed to calculate the homography of flight im
 
 ## Requirements
 
-1. g++ v4.8.2 or later (previous versions of g++ are as of yet untested with this software)
-2. Python 2.7
-3. OpenCV 2.4.x with python support (GPU support is optional)
+* g++ v4.8.2 or later (previous versions of g++ are as of yet untested with this software)
+* Python 2.7
+* OpenCV 2.4.x with python support (GPU support is optional)
 
 ## Setting Up Your System (Ubuntu)
 
@@ -35,7 +35,7 @@ As you can see from the output above, the version of g++ is currently 4.8.4
 
 ### Installing Python
 
-`$ sudo apt-get install python``
+`$ sudo apt-get install python`
 
 This command will install Python 2.7.x
 
@@ -77,34 +77,34 @@ The generate_image_keypoints.py script can be used for this purpose.
 
 generate_image_keypoints.py takes three command-line arguments:
 
-1. image_file        - This argument shall be the file-name of the image from which keypoints will be extracted.
-2. keypoint_file     - This argument will specify the name of the output file (formated as a JSON) which will contain all the keypoint information.
-3. hessian_threshold - The minimum Hessian threshold used when calculating keypoints will be specified by this argument.
+* image_file, This argument shall be the file-name of the image from which keypoints will be extracted.
+* keypoint_file, This argument will specify the name of the output file (formated as a JSON) which will contain all the keypoint information.
+* hessian_threshold, The minimum Hessian threshold used when calculating keypoints will be specified by this argument.
 
-Example:
-image_file = chatfield_park_z15-0.png
-keypoint_file = chatfield_park_z15-0.json
-hessian_threshold = 400
-$ python generate_image_keypoints.py chatfield_park_z15-0.png chatfield_park_z15-0.json 400
+**Example:**
+* image_file = chatfield_park_z15-0.png
+* keypoint_file = chatfield_park_z15-0.json
+* hessian_threshold = 400
+`$ python generate_image_keypoints.py chatfield_park_z15-0.png chatfield_park_z15-0.json 400`
 
 Once keypoints have been generated, the homography script can be run next.
 
 homography.py takes four command-line arguments:
-1. scene_keypoints - File-name of the JSON formatted data containing keypoints from the satellite image.
-2. scene_image     - File-name of the satellite image.
-3. flight_image    - File-name of the flight image.
-4. output_data     - File-name of the JSON formatted output containing results from the homography calculation.
+* scene_keypoints, File-name of the JSON formatted data containing keypoints from the satellite image.
+* scene_image, File-name of the satellite image.
+* flight_image, File-name of the flight image.
+* output_data, File-name of the JSON formatted output containing results from the homography calculation.
 
 An optional fifth argument can be passed, which specifies an output image containing matches and vertices.
 `-i OUTPUT_IMAGE`
 
-Example:
-scene_keypoints = chatfield_park_z15-0.json
-scene_image = chatfield_park_z15-0.png
-flight_image = chatfield_park_z16-3.png
-output_data = out.json
-OUTPUT_IMAGE = out.png
-$ python homography.py chatfield_park_z15-0.json chatfield_park_z15-0.png chatfield_park_z16-3.png out.json -i out.png
+**Example:**
+* scene_keypoints = chatfield_park_z15-0.json
+* scene_image = chatfield_park_z15-0.png
+* flight_image = chatfield_park_z16-3.png
+* output_data = out.json
+* OUTPUT_IMAGE = out.png
+`$ python homography.py chatfield_park_z15-0.json chatfield_park_z15-0.png chatfield_park_z16-3.png out.json -i out.png`
 
 ## Enable GPU Support
 
