@@ -1,26 +1,26 @@
 # homography
 
-===== Description =====
+## Description
 
 This collection of software is designed to calculate the homography of flight images against satellite imagery of some pre-determined area.
 
-===== Requirements =====
+## Requirements
 
-(1) g++ v4.8.2 or later (previous versions of g++ are as of yet untested with this software)
-(2) Python 2.7
-(3) OpenCV 2.4.x with python support (GPU support is optional)
+1. g++ v4.8.2 or later (previous versions of g++ are as of yet untested with this software)
+2. Python 2.7
+3. OpenCV 2.4.x with python support (GPU support is optional)
 
-===== Setting Up Your System (Ubuntu) =====
+## Setting Up Your System (Ubuntu)
 
 If you're running Ubuntu, the following is a step-by-step list of directions for setting up your system to build and run this software.
 
-(1) Setting Up Your Build Environment
+1. Setting Up Your Build Environment
 
-   (1.1) $ sudo apt-get install build-essential 
+  * $ sudo apt-get install build-essential 
 
 Executing this under your command line will install all the nessessary tools used to compile C/C++.
 
-   (1.2) $ g++ --version
+  * $ g++ --version
 
 This command should provide output which looks similar to the following:
 
@@ -31,40 +31,40 @@ warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
 As you can see from the output above, the version of g++ is currently 4.8.4
 
-(2) Installing Python
+2. Installing Python
 
-   (2.1) $ sudo apt-get install python
+  * $ sudo apt-get install python
 
 This command will install Python 2.7.x
 
-   (2.1) $ python --version
+  * $ python --version
 
 After installing python, it's always a good idea to make sure you have the right version.
 
-(3) Install OpenCV
+3. Install OpenCV
 
 A good place to start is at the following link:
 http://docs.opencv.org/doc/tutorials/introduction/linux_install/linux_install.html
 
-===== Getting Started =====
+## Getting Started
 
-(1) Install the homography software package.
+1. Install the homography software package.
 
 $ git clone https://github.com/mtriche128/homography.git
 
-(2) Build and install the library.
+2. Build and install the library.
 
 $ cd homography/lib
 $ make
 $ make install
 
-(3) Veryify the library has been installed properly.
+3. Veryify the library has been installed properly.
 
 $ cd ..
 $ ls libhg.so
 libhg.so
 
-(4) Running the Software
+4. Running the Software
 
 Before the homography script can be used, keypoints must first be generated from the satellite image. 
 The generate_image_keypoints.py script can be used for this purpose. 
