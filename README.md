@@ -1,4 +1,4 @@
-# homography
+# Homography Software Package
 
 ## Description
 
@@ -72,6 +72,8 @@ libhg.so
 
 ### Running the Software
 
+#### Generate Keypoints
+
 Before the homography script can be used, keypoints must first be generated from the satellite image. 
 The generate_image_keypoints.py script can be used for this purpose. 
 
@@ -87,6 +89,8 @@ generate_image_keypoints.py takes three command-line arguments:
 * hessian_threshold = 400
 
 `$ python generate_image_keypoints.py chatfield_park_z15-0.png chatfield_park_z15-0.json 400`
+
+#### Calculate Homography
 
 Once keypoints have been generated, the homography script can be run next.
 
@@ -106,6 +110,7 @@ An optional fifth argument can be passed, which specifies an output image contai
 * flight_image = chatfield_park_z16-3.png
 * output_data = out.json
 * OUTPUT_IMAGE = out.png
+
 `$ python homography.py chatfield_park_z15-0.json chatfield_park_z15-0.png chatfield_park_z16-3.png out.json -i out.png`
 
 ## Enable GPU Support
