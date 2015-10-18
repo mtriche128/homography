@@ -77,25 +77,27 @@ The generate_image_keypoints.py script can be used for this purpose.
 
 generate_image_keypoints.py takes three command-line arguments:
 
-* image_file, This argument shall be the file-name of the image from which keypoints will be extracted.
-* keypoint_file, This argument will specify the name of the output file (formated as a JSON) which will contain all the keypoint information.
-* hessian_threshold, The minimum Hessian threshold used when calculating keypoints will be specified by this argument.
+* image_file = This argument shall be the file-name of the image from which keypoints will be extracted.
+* keypoint_file = This argument will specify the name of the output file (formated as a JSON) which will contain all the keypoint information.
+* hessian_threshold = The minimum Hessian threshold used when calculating keypoints will be specified by this argument.
 
 **Example:**
 * image_file = chatfield_park_z15-0.png
 * keypoint_file = chatfield_park_z15-0.json
 * hessian_threshold = 400
+
 `$ python generate_image_keypoints.py chatfield_park_z15-0.png chatfield_park_z15-0.json 400`
 
 Once keypoints have been generated, the homography script can be run next.
 
 homography.py takes four command-line arguments:
-* scene_keypoints, File-name of the JSON formatted data containing keypoints from the satellite image.
-* scene_image, File-name of the satellite image.
-* flight_image, File-name of the flight image.
-* output_data, File-name of the JSON formatted output containing results from the homography calculation.
+* scene_keypoints = File-name of the JSON formatted data containing keypoints from the satellite image.
+* scene_image = File-name of the satellite image.
+* flight_image = File-name of the flight image.
+* output_data = File-name of the JSON formatted output containing results from the homography calculation.
 
-An optional fifth argument can be passed, which specifies an output image containing matches and vertices.
+An optional fifth argument can be passed, which specifies an output image containing matches and vertices:
+
 `-i OUTPUT_IMAGE`
 
 **Example:**
