@@ -35,8 +35,8 @@ using namespace cv::gpu;
  * Define Constants                                                          *
  * ------------------------------------------------------------------------- */
 
-// Uncomment this to enable GPU acceleration.
-#define ENABLE_GPU 
+// uncomment the following line to enable GPU acceleration.
+//#define ENABLE_GPU 
 
 /* ------------------------------------------------------------------------- *
  * Define Types                                                              *
@@ -340,13 +340,13 @@ extern "C" void Process(results_t *dst, double ratio)
 	
 	Mat H = findHomography(objKeypointsHg, sceneKeypointsHg, CV_RANSAC );
 	
-    vector<Point2f> obj_corners(4); // stores object image corners
-    obj_corners[0] = cvPoint(0,0);
-    obj_corners[1] = cvPoint(objImg.cols, 0);
-    obj_corners[2] = cvPoint(objImg.cols, objImg.rows);
-    obj_corners[3] = cvPoint(0, objImg.rows);
-
-    perspectiveTransform(obj_corners, output_vert, H);
+	vector<Point2f> obj_corners(4); // stores object image corners
+	obj_corners[0] = cvPoint(0,0);
+	obj_corners[1] = cvPoint(objImg.cols, 0);
+	obj_corners[2] = cvPoint(objImg.cols, objImg.rows);
+	obj_corners[3] = cvPoint(0, objImg.rows);
+	
+	perspectiveTransform(obj_corners, output_vert, H);
 	
 	tend = clock();
 	dst->htime = (double)(tend - tstart)/(double)CLOCKS_PER_SEC;

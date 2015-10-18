@@ -50,7 +50,7 @@ def main():
 	
 	# ----- parse arguments -----
 	
-	parse = argparse.ArgumentParser(description="homography test")
+	parse = argparse.ArgumentParser(description="compute homography of objects against scenes")
 	parse.add_argument("scene_keypoints", help="json file containing keypoint data for the scene")
 	parse.add_argument("scene_image", help="image from which scene keypoints were taken")
 	parse.add_argument("flight_image", help="filename of the flight image")
