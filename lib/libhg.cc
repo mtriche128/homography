@@ -384,9 +384,9 @@ extern "C" void StoreOutputImage(char *filename)
 		        DrawMatchesFlags::NOT_DRAW_SINGLE_POINTS);
 	
 	line( img_matches, output_vert[0] + Point2f( objImg.cols, 0), output_vert[1] + Point2f( objImg.cols, 0), Scalar(0, 255, 0), 4 );
-    line( img_matches, output_vert[1] + Point2f( objImg.cols, 0), output_vert[2] + Point2f( objImg.cols, 0), Scalar( 0, 255, 0), 4 );
-    line( img_matches, output_vert[2] + Point2f( objImg.cols, 0), output_vert[3] + Point2f( objImg.cols, 0), Scalar( 0, 255, 0), 4 );
-    line( img_matches, output_vert[3] + Point2f( objImg.cols, 0), output_vert[0] + Point2f( objImg.cols, 0), Scalar( 0, 255, 0), 4 );
+	line( img_matches, output_vert[1] + Point2f( objImg.cols, 0), output_vert[2] + Point2f( objImg.cols, 0), Scalar( 0, 255, 0), 4 );
+	line( img_matches, output_vert[2] + Point2f( objImg.cols, 0), output_vert[3] + Point2f( objImg.cols, 0), Scalar( 0, 255, 0), 4 );
+	line( img_matches, output_vert[3] + Point2f( objImg.cols, 0), output_vert[0] + Point2f( objImg.cols, 0), Scalar( 0, 255, 0), 4 );
 	
 	imwrite(filename, img_matches);
 }
