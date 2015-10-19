@@ -332,6 +332,12 @@ extern "C" void Process(results_t *dst, double ratio)
 	
 	tstart = clock();
 	
+	if(matches.size() < 4)
+	{
+		cout << "Error: Not enough matches found to calculate homography: match count = " << matches.size() << endl;
+		exit(1);
+	}
+	
 	for(int i = 0; i < matches.size(); i++)
 	{
 			objKeypointsHg.push_back(objKeypoints[matches[i].queryIdx].pt);
