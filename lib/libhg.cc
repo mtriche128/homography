@@ -69,6 +69,8 @@ typedef struct RESULTS_
 	double ftime;      // The elapsed time of the feature phase. (seconds)
 	double mtime;      // The elapsed time of the matching phase. (seconds)
 	double htime;      // The elapsed time of the homography phase. (seconds)
+	int m_num;         // Stores the number of matches made.
+	int f_num;         // Stores the number of object features found.
 } results_t;
 
 /* ------------------------------------------------------------------------- *
@@ -79,18 +81,24 @@ typedef struct RESULTS_
  * Declare External Functions                                                *
  * ------------------------------------------------------------------------- */
 
+extern "C" void EnableOutput(bool);
+extern "C" void EnableHomography(bool);
 extern "C" void ConfigureSURF(int);
 extern "C" void LoadSceneKeypoints(c_KeyPoint*,int);
 extern "C" void LoadSceneDescriptors(float*,int,int);
 extern "C" bool LoadObjectImage(char *filename);
 extern "C" bool LoadSceneImage(char *filename);
 extern "C" void StoreOutputImage(char *filename);
+extern "C" void SceneSURF();
 extern "C" void Process(results_t*,double);
 extern "C" void Release();
 
 /* ------------------------------------------------------------------------- *
  * Define Internal Variables                                                 *
  * ------------------------------------------------------------------------- */
+
+bool output = true;
+bool hg     = true;
 
 static Mat sceneDesc, objDesc; // object and scene descriptors
 static Mat objImg, sceneImg; // object and scene images
@@ -99,8 +107,8 @@ static vector<Point2f> output_vert(4); // vertices used when storing an output i
 static vector<DMatch> matches;
 
 #ifndef ENABLE_GPU
-	static SurfFeatureDetector *detector;
-	static SurfDescriptorExtractor *extractor;
+	static SurfFeatureDetector *detector = NULL;
+	static SurfDescriptorExtractor *extractor = NULL;
 #else
 	static SURF_GPU *surf = NULL;
 	static GpuMat sceneDescGPU, objDescGPU;
@@ -118,6 +126,28 @@ static vector<DMatch> matches;
  * ------------------------------------------------------------------------- */
 
 /**
+ * @brief Enable/disable output.
+ * 
+ * @param en True to enable. False to disable.
+ */
+
+extern "C" void EnableOutput(bool en)
+{
+	output = en;
+}
+
+/**
+ * @brief Enable/disable homography calculation.
+ * 
+ * @param en True to enable. False to disable.
+ */
+
+extern "C" void EnableHomography(bool en)
+{
+	hg = en;
+}
+
+/**
  * @brief Configure SURF properties. Only needed if GPU is enabled.
  * 
  * @param minHess  The minimum Hessian threshold.
@@ -133,12 +163,24 @@ extern "C" void ConfigureSURF(int minHess)
 	#define SURF_EXTENDED     false
 	#define KP_RATIO          0.01
 
+	if(surf)
+	{
+		surf->releaseMemory();
+		delete surf;
+	}
+	
 	surf = new SURF_GPU(minHess,
 	                    SURF_N_OCT,
 	                    SURF_N_OCT_LAYERS,
 	                    SURF_EXTENDED,
 	                    KP_RATIO);
 #else
+	
+	if(detector)
+	{
+		delete detector;
+		delete extractor;
+	}
 	
 	detector = new SurfFeatureDetector(minHess);
 	extractor = new SurfDescriptorExtractor();
@@ -238,6 +280,28 @@ extern "C" bool LoadSceneImage(char *filename)
 }
 
 /**
+ * @brief Extract features from scene image.
+ */
+
+extern "C" void SceneSURF()
+{
+
+#ifdef ENABLE_GPU
+
+	(*surf)(sceneImgGPU, GpuMat(), sceneKpGPU, sceneDescGPU);
+	
+	surf->downloadKeypoints(sceneKpGPU, sceneKeypoints);
+	
+#else
+	
+	detector->detect(sceneImg, sceneKeypoints);
+	extractor->compute(sceneImg, sceneKeypoints, sceneDesc);
+	
+#endif
+
+}
+
+/**
  * @brief Process all data and find the homography of the object image.
  * 
  * @param dst     Destination pointer where results will be written.
@@ -249,12 +313,14 @@ extern "C" void Process(results_t *dst, double ratio)
 {
 	int tstart, tend;
 	
-	cout << "Processing Data... " << endl;
+	if(output)
+		cout << "Processing Data... " << endl;
 	
 	// --------------------------------------
 	// detect object features
 	
-	cout << "  (1) extracting object features" << endl;
+	if(output)
+		cout << "  (1) extracting object features" << endl;
 	
 #ifdef ENABLE_GPU
 
@@ -275,10 +341,13 @@ extern "C" void Process(results_t *dst, double ratio)
 	
 #endif
 	
+	dst->f_num = objKeypoints.size(); // store number of object features
+	
 	// --------------------------------------
 	// find matches
 	
-	cout << "  (2) finding matches" << endl;
+	if(output)
+		cout << "  (2) finding matches" << endl;
 	
 	vector< vector<DMatch> > init_matches;
 	
@@ -321,11 +390,16 @@ extern "C" void Process(results_t *dst, double ratio)
 	dst->mtime = (double)(tend - tstart)/(double)CLOCKS_PER_SEC;	
 
 #endif
+	
+	dst->m_num = matches.size(); // stores number of matches found
 
 	// --------------------------------------
 	// calculate homography
 	
-	cout << "  (3) calculating homography" << endl;
+	if(!hg) return;
+	
+	if(output)
+		cout << "  (3) calculating homography" << endl;
 	
 	vector<Point2f> objKeypointsHg;
 	vector<Point2f> sceneKeypointsHg;
@@ -360,7 +434,8 @@ extern "C" void Process(results_t *dst, double ratio)
 	// --------------------------------------
 	// write vertex results
 	
-	cout << "  (4) writing vertex results" << endl;
+	if(output)
+		cout << "  (4) writing vertex results" << endl;
 
 	dst->vert[0].x = output_vert[0].x;
 	dst->vert[1].x = output_vert[1].x;
@@ -372,7 +447,8 @@ extern "C" void Process(results_t *dst, double ratio)
 	dst->vert[2].y = output_vert[2].y;
 	dst->vert[3].y = output_vert[3].y;
 
-	cout << "DONE" << endl;
+	if(output)
+		cout << "DONE" << endl;
 }
 
 /**

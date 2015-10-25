@@ -15,7 +15,9 @@ class c_Results(Structure):
 	_fields_ = [("vert",  c_Point2f*4),
 	            ("ftime", c_double),
 	            ("mtime", c_double),
-	            ("htime", c_double)]
+	            ("htime", c_double),
+	            ("m_num", c_int),
+	            ("f_num", c_int)]
 
 # -----------------------------------------------------------------------------
 # class LibHG
@@ -82,6 +84,9 @@ class LibHG():
 	def StoreOutputImage(self, filename):
 		self.lib.StoreOutputImage(filename)
 	
+	def SceneSURF(self):
+		self.lib.SceneSURF()
+		
 	def Process(self, c_results, ratio):
 		ptr = cast(pointer(c_results), POINTER(c_Results)) # aquire a pointer to the structure where results will be stored
 		self.lib.Process(ptr, ratio)
